@@ -1,6 +1,5 @@
 package star16m.utils.cli.command;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
