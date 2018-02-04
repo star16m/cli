@@ -1,7 +1,11 @@
 package star16m.utils.cli.command;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 
 import javax.annotation.PostConstruct;
 
@@ -32,8 +36,12 @@ public class FileCommand implements CommandLineRunner {
     }
 
     private void printHelp() {
+    	printHelp(null);
+    }
+    private void printHelp(String message) {
         System.out.println("===================================================");
-        formatter.printHelp("clifind [-t <type[f|d]>]", options);
+        if (message != null) {System.out.println(message);}
+        formatter.printHelp("cli [-t <type[f|d]>]", options);
         System.out.println("===================================================");
     }
 
@@ -44,23 +52,34 @@ public class FileCommand implements CommandLineRunner {
         try {
             cl = parser.parse(options, args);
         } catch (ParseException e) {
-            printHelp();
+            printHelp("Can't parse arguments.");
             System.exit(1);
         }
         if (cl.hasOption("h")) {
             printHelp();
             return;
         }
-
         String dirString = cl.getOptionValue("d");
         if (!cl.hasOption("d") || StringUtils.isEmpty(dirString)) {
-            printHelp();
+            printHelp("Please specify directory.");
             return;
         }
-        String type = cl.getOptionValue("t");
-
-        File rootFile = Paths.get(dirString).toFile();
-        System.out.println(rootFile.getAbsolutePath());
+        final boolean hasType = cl.hasOption("t");
+        final String type = cl.getOptionValue("t");
+        if (hasType && (!type.equalsIgnoreCase("d") && !type.equalsIgnoreCase("f"))) {
+        	printHelp("Please specify type [d|f].");
+        	return;
+        }
+        Files.walk(Paths.get(dirString), FileVisitOption.FOLLOW_LINKS)
+        .sorted(Comparator.reverseOrder()) // as default
+        .filter((f)->((hasType && type.equalsIgnoreCase("d") && f.toFile().isDirectory()) || (hasType && type.equalsIgnoreCase("f") && f.toFile().isFile())))
+        .forEach((f) -> {
+    		try {
+				System.out.println(f.toFile().getCanonicalPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        })
+        ;
     }
-
 }
