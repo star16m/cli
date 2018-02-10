@@ -16,7 +16,7 @@ public class ExceptionHandlerAdvice {
         try {
             joinPoint.proceed();
         } catch (Throwable e) {
-            log.error(e.getMessage());
+//            log.error(e.getMessage());
         }
     }
 }
