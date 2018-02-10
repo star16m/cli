@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CliApplication {
 
 	public static void main(String[] args) {
-		args = new String[] {"file", "-d", ".", "-t", "d"};
+		args = new String[] {"log", "-l", "target/logfile.log"};
 		SpringApplication.run(CliApplication.class, args);
 	}
 }

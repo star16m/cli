@@ -10,7 +10,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
@@ -74,7 +73,7 @@ public class CliCommandImpl implements CommandLineRunner {
             	return;
             }
             command.run(cl);
-        } catch (ParseException e) {
+        } catch (Throwable e) {
             // default option [help]
             if (Arrays.asList(commandArguments).stream().anyMatch(o->o.equalsIgnoreCase("-h"))) {
             	printHelp();

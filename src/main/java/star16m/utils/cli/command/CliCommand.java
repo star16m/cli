@@ -6,5 +6,5 @@ import org.apache.commons.cli.Options;
 public interface CliCommand {
 
 	public void initOption(final Options options);
-	public void run(final CommandLine commandLine) throws CliException;
+	public void run(final CommandLine commandLine) throws Throwable;
 }

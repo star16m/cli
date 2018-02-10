@@ -11,12 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class ExceptionHandlerAdvice {
-    @Around("execution(* org.springframework.boot.CommandLineRunner+.run(..))")
+//    @Around("execution(* org.springframework.boot.CommandLineRunner+.run(..))")
+	@Around("execution(* star16m.utils.cli.command.CliCommand.run(org.apache.commons.cli.CommandLine))")
     public void handleException(ProceedingJoinPoint joinPoint) {
         try {
             joinPoint.proceed();
         } catch (Throwable e) {
-//            log.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 }
