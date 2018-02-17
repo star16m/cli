@@ -42,6 +42,10 @@ public class CliCommandImpl implements CommandLineRunner {
         formatter = new HelpFormatter();
         CliCommand command = null;
         String commandName = null;
+        if (args == null || args.length == 0) {
+            printHelp();
+            System.exit(1);
+        }
         commandName = args[0];
         String[] commandArguments = Arrays.copyOfRange(args, 1, args.length);
         try {
